@@ -8,6 +8,7 @@ import adUnit from 'test/fixtures/video/adUnit';
 const bid = {
   videoCacheKey: 'abc',
   adserverTargeting: { },
+  vastUrl: 'vastUrl.example'
 };
 
 describe('The DFP video support module', () => {
@@ -34,6 +35,16 @@ describe('The DFP video support module', () => {
     expect(queryParams).to.have.property('sz', '640x480');
     expect(queryParams).to.have.property('unviewed_position_start', '1');
     expect(queryParams).to.have.property('url');
+  });
+
+  it('can take an adserver url as a parameter', () => {
+    const url = buildDfpVideoUrl({
+      adUnit: adUnit,
+      bid: bid,
+      url: 'https://pubads.g.doubleclick.net/',
+    });
+
+    expect(url).to.equal('https://pubads.g.doubleclick.net/?description_url=vastUrl.example&cust_params=hb_uuid%3Dabc');
   });
 
   it('should override param defaults with user-provided ones', () => {
